@@ -6,6 +6,7 @@ runs if some risk registers were delivered too late etc.
 """
 
 import os
+import sys
 from datetime import datetime, timedelta
 from glob import glob
 
@@ -14,7 +15,14 @@ from openpyxl import load_workbook
 from openpyxl.worksheet.table import Table
 
 
-CUR_PATH = os.path.abspath(os.path.dirname(__file__))
+if getattr(sys, 'frozen', False):
+    # If the application is run as a bundle, the PyInstaller bootloader
+    # extends the sys module by a flag frozen=True and sets the app
+    # path into variable _MEIPASS'.
+    CUR_PATH = os.path.dirname(os.path.abspath(sys.executable))
+else:
+    CUR_PATH = os.path.dirname(os.path.abspath(__file__))
+
 DATE_OVERWRITE = None  # datetime(year=2022, month=7, day=27)
 
 
@@ -91,6 +99,8 @@ def main():
                          '?, ?, ?, ?, ?, ?, ?)',
                          insert_data)
     crsr.commit()
+
+    input("Finished, press enter to close program.")
 
 
 if __name__=='__main__':
