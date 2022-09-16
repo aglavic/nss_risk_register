@@ -1,3 +1,6 @@
 .idea
 __pycache__
 latest
+build
+dist
+*.log
